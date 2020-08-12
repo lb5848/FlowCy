@@ -70,7 +70,8 @@ flowSet <- sce2fcs(sce, split_by = "Clusters", keep_cd = TRUE, keep_dr = FALSE, 
 write.flowSet(flowSet, outdir = outputDirectory, filename = "bycluster")
 merged <- sce2fcs(sce, split_by = NULL, keep_cd = TRUE, keep_dr = FALSE, assay = "counts")
 write.FCS(merged, filename = "merged.fcs")
-
+by_condition <- sce2fcs(sce, split_by = "condition", keep_cd = TRUE, keep_dr = FALSE, assay = "counts")
+write.flowSet(by_condition, outdir = outputDirectory, filename = "bycondition")
 # Save final workspace
 save(list = ls(), file = "workspaceFinal.rds")
 
