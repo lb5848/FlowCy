@@ -60,7 +60,7 @@ sce <- readRDS("SCE_part2_DR.rds")
 CATALYST::pbMDS(sce, by = "sample_id", color_by = "condition", features = type_markers(sce), fun = "median")
 plotAbundances(sce, k = "meta10", by = "cluster_id", group_by = "condition")
 
-plotExprHeatmap(sce, features = type_markers(sce), k = "meta10", by = "cluster_id", scale = "last")
+plotExprHeatmap(sce, features = type_markers(sce), k = "meta10", by = "cluster_id", scale = "last", bars = TRUE, perc = TRUE)
 
 
 
@@ -69,18 +69,18 @@ ei <- sce@metadata$experiment_info
 
 # DA using GLMM
 
-(da_formula1 <- createFormula(ei, 
-                              cols_fixed = "condition",
-                              cols_random = c("patient_id")))
-contrast2 <- createContrast(c(0,1))
-da_res2 <- diffcyt(sce,
-                   formula = da_formula1, contrast = contrast2,
-                   analysis_type = "DA", method_DA = "diffcyt-DA-GLMM",
-                   clustering_to_use = "meta10", verbose = TRUE, subsampling = TRUE,
-                   transform = FALSE, normalize = FALSE) 
-da2 <- rowData(da_res2$res)
-
-plotDiffHeatmap(sce, da2, top_n = 12, all = TRUE, fdr = FDR_cutoff)
+# (da_formula1 <- createFormula(ei, 
+#                               cols_fixed = "condition",
+#                               cols_random = c("patient_id")))
+# contrast2 <- createContrast(c(0,1))
+# da_res2 <- diffcyt(sce,
+#                    formula = da_formula1, contrast = contrast2,
+#                    analysis_type = "DA", method_DA = "diffcyt-DA-GLMM",
+#                    clustering_to_use = "meta10", verbose = TRUE, subsampling = TRUE,
+#                    transform = FALSE, normalize = FALSE) 
+# da2 <- rowData(da_res2$res)
+# 
+# plotDiffHeatmap(sce, da2, top_n = 12, all = TRUE, fdr = FDR_cutoff)
 
 # DA using edgeR
 design <- createDesignMatrix(ei,
@@ -96,6 +96,7 @@ out_DA <- diffcyt(sce,
 
 da <- rowData(out_DA$res)
 plotDiffHeatmap(sce, da, top_n = 10, all = TRUE, fdr = FDR_cutoff)
+
 
 
 # Save current workspace
